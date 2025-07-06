@@ -215,15 +215,17 @@ function initializeContactCarousel() {
   const contactsSection = document.getElementById('contacts');
   const prevButton = document.getElementById('contact-prev');
   const nextButton = document.getElementById('contact-next');
-  
+  const prevButtonMobile = document.getElementById('contact-prev-mobile');
+  const nextButtonMobile = document.getElementById('contact-next-mobile');
+
   // Add click event listeners to progress dots
   progressDots.forEach((dot, index) => {
     dot.addEventListener('click', () => {
       showContactBlock(index);
     });
   });
-  
-  // Add click event listeners to arrow buttons
+
+  // Add click event listeners to arrow buttons (desktop)
   if (prevButton) {
     prevButton.addEventListener('click', () => {
       if (currentContactBlock > 0) {
@@ -231,7 +233,6 @@ function initializeContactCarousel() {
       }
     });
   }
-  
   if (nextButton) {
     nextButton.addEventListener('click', () => {
       if (currentContactBlock < totalContactBlocks - 1) {
@@ -239,7 +240,22 @@ function initializeContactCarousel() {
       }
     });
   }
-  
+  // Add click event listeners to arrow buttons (mobile)
+  if (prevButtonMobile) {
+    prevButtonMobile.addEventListener('click', () => {
+      if (currentContactBlock > 0) {
+        showContactBlock(currentContactBlock - 1);
+      }
+    });
+  }
+  if (nextButtonMobile) {
+    nextButtonMobile.addEventListener('click', () => {
+      if (currentContactBlock < totalContactBlocks - 1) {
+        showContactBlock(currentContactBlock + 1);
+      }
+    });
+  }
+
   // Auto-advance every 5 seconds when section is visible
   if (contactsSection) {
     const startAutoAdvance = () => {
@@ -476,89 +492,74 @@ function initializeAboutTabs() {
       const targetContent = document.getElementById(`tab-${targetTab}`);
       if (targetContent) {
         targetContent.classList.remove('hidden');
-        targetContent.style.opacity = '0';
-        targetContent.style.transition = 'opacity 0.15s ease';
-        // Use requestAnimationFrame to ensure the class is removed before opacity is set
-        requestAnimationFrame(() => {
-          targetContent.style.opacity = '1';
-        });
-        // Clean up transition after fade-in
+        // Fade in effect
         setTimeout(() => {
-          targetContent.style.transition = '';
-        }, 200);
+          targetContent.style.transition = 'opacity 0.4s';
+          targetContent.style.opacity = '1';
+        }, 10);
       }
     });
   });
-  // Initialize first tab as active
-  const firstTab = document.querySelector('.about-tab[data-tab="personal"]');
-  const firstContent = document.getElementById('tab-personal');
-  if (firstTab && firstContent) {
-    firstTab.classList.add('bg-white', 'text-black');
-    firstContent.classList.remove('hidden');
-    firstContent.style.opacity = '1';
-    firstContent.style.transition = '';
-  }
 }
 
-// Typewriter effect for the quote section
+// Typewriter effect for quote section
 function initializeTypewriter() {
-  const typewriterElement = document.getElementById('typewriter-text');
-  if (!typewriterElement) return;
-
-  // You can add more quotes here if you want to rotate them
   const quotes = [
-    '“The best way to predict the future is to invent it.”',
-    '“Simplicity is the soul of efficiency.”',
-    '“Code is like humor. When you have to explain it, it’s bad.”',
-    '“Innovation distinguishes between a leader and a follower.”',
-    '“First, solve the problem. Then, write the code.”'
+    { text: 'The best way to predict the future is to invent it.', author: 'Alan Kay' },
+    { text: 'Simplicity is the soul of efficiency.', author: 'Austin Freeman' },
+    { text: 'Code is like humor. When you have to explain it, it’s bad.', author: 'Cory House' },
   ];
-  const authorElement = document.querySelector('.fade-in-author h3');
-  const authors = [
-    '~ Alan Kay',
-    '~ Austin Freeman',
-    '~ Cory House',
-    '~ Steve Jobs',
-    '~ John Johnson'
-  ];
+  const quoteText = document.getElementById('quote-text');
+  const quoteAuthor = document.getElementById('quote-author');
   let quoteIndex = 0;
+  let charIndex = 0;
+  let typing = true;
 
-  function typeQuote(quote, author, callback) {
-    typewriterElement.textContent = '';
-    let i = 0;
-    function type() {
-      if (i < quote.length) {
-        typewriterElement.textContent += quote.charAt(i);
-        i++;
-        setTimeout(type, 38); // typing speed
-      } else if (callback) {
-        setTimeout(callback, 1200); // pause before next quote
+  function typeQuote() {
+    if (!quoteText || !quoteAuthor) return;
+    const { text, author } = quotes[quoteIndex];
+    if (typing) {
+      if (charIndex < text.length) {
+        quoteText.textContent += text.charAt(charIndex);
+        charIndex++;
+        setTimeout(typeQuote, 40);
+      } else {
+        typing = false;
+        setTimeout(typeAuthor, 600);
       }
     }
-    type();
-    // Fade in author after quote is done
-    if (authorElement) {
-      authorElement.style.opacity = 0;
-      setTimeout(() => {
-        authorElement.textContent = author;
-        authorElement.parentElement.classList.add('transition-opacity');
-        authorElement.style.opacity = 1;
-      }, quote.length * 38 + 300);
+  }
+
+  function typeAuthor() {
+    if (!quoteText || !quoteAuthor) return;
+    const { author } = quotes[quoteIndex];
+    if (charIndex - quotes[quoteIndex].text.length < author.length) {
+      quoteAuthor.textContent += author.charAt(charIndex - quotes[quoteIndex].text.length);
+      charIndex++;
+      setTimeout(typeAuthor, 60);
+    } else {
+      setTimeout(eraseQuote, 2200);
     }
   }
 
-  function nextQuote() {
-    typeQuote(quotes[quoteIndex], authors[quoteIndex], () => {
-      setTimeout(() => {
-        // Fade out author
-        if (authorElement) authorElement.style.opacity = 0;
-        setTimeout(() => {
-          quoteIndex = (quoteIndex + 1) % quotes.length;
-          nextQuote();
-        }, 400);
-      }, 1800);
-    });
+  function eraseQuote() {
+    if (!quoteText || !quoteAuthor) return;
+    if (quoteAuthor.textContent.length > 0) {
+      quoteAuthor.textContent = quoteAuthor.textContent.slice(0, -1);
+      setTimeout(eraseQuote, 20);
+    } else if (quoteText.textContent.length > 0) {
+      quoteText.textContent = quoteText.textContent.slice(0, -1);
+      setTimeout(eraseQuote, 10);
+    } else {
+      quoteIndex = (quoteIndex + 1) % quotes.length;
+      charIndex = 0;
+      typing = true;
+      setTimeout(typeQuote, 400);
+    }
   }
 
-  nextQuote();
+  // Start the typewriter effect
+  quoteText.textContent = '';
+  quoteAuthor.textContent = '';
+  typeQuote();
 }
