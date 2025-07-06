@@ -13,6 +13,17 @@
 </head>
 
 <body style="background-color: rgb(32, 39, 42);">
+  <!-- Loading Overlay -->
+  <div id="loading-overlay" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 transition-opacity duration-500">
+    <div class="flex flex-col items-center">
+      <svg class="animate-spin h-12 w-12 text-white mb-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="white" stroke-width="4"></circle>
+        <path class="opacity-75" fill="white" d="M4 12a8 8 0 018-8v8z"></path>
+      </svg>
+      <p class="text-white font-lexend text-xl">Loading...</p>
+    </div>
+  </div>
+
   <nav class="h-12 bg-transparent items-center justify-between flex relative z-50">
       <p class="font-lexend text-white mx-auto text-lg">bubiss.lv</p>
       <p id="time" class="font-lexend text-white text-right absolute right-5 text-lg">Time</p>
@@ -113,8 +124,14 @@
 
   <!-- Middle: Single contact block container with navigation -->
   <div class="flex flex-col md:flex-row justify-center items-center flex-grow w-full px-2">
+    <!-- Desktop: Left Arrow -->
+    <button id="contact-prev" class="hidden md:block text-white hover:text-gray-300 transition-all duration-300 p-1 sm:p-2 md:p-4 mb-0 md:mr-2 flex-shrink-0 z-10">
+      <svg class="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+      </svg>
+    </button>
     <!-- Contact Blocks Container -->
-    <div class="contact-blocks-container flex justify-center w-[90vw] max-w-[28rem] min-w-0 order-2 md:order-none">
+    <div class="contact-blocks-container flex justify-center w-[90vw] max-w-[28rem] min-w-0 mb-4 md:mb-0">
       <!-- Contact Info Block -->
       <div id="contact-block-0" class="contact-block text-white p-12 w-[28rem] h-[28rem] rounded-xl shadow-lg border border-2 border-white flex flex-col" style="background-color: rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px);">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" class="size-10">
@@ -164,17 +181,21 @@
         </div>
       </div>
     </div>
-    <!-- Arrow Buttons: below card on mobile, sides on desktop -->
-    <div class="flex flex-row md:flex-col justify-center items-center mt-4 md:mt-0 md:ml-2 order-3 md:order-none">
-      <!-- Left Arrow -->
-      <button id="contact-prev" class="text-white hover:text-gray-300 transition-all duration-300 p-1 sm:p-2 md:p-4 mr-2 md:mr-0 md:mb-2 flex-shrink-0 z-10">
-        <svg class="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <!-- Desktop: Right Arrow -->
+    <button id="contact-next" class="hidden md:block text-white hover:text-gray-300 transition-all duration-300 p-1 sm:p-2 md:p-4 md:ml-2 flex-shrink-0 z-10">
+      <svg class="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+      </svg>
+    </button>
+    <!-- Mobile: Centered Arrows Below Card -->
+    <div class="flex md:hidden w-full justify-center gap-6 mt-2">
+      <button id="contact-prev-mobile" class="text-white hover:text-gray-300 transition-all duration-300 p-2 flex-shrink-0 z-10">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
         </svg>
       </button>
-      <!-- Right Arrow -->
-      <button id="contact-next" class="text-white hover:text-gray-300 transition-all duration-300 p-1 sm:p-2 md:p-4 ml-2 md:ml-0 md:mt-2 flex-shrink-0 z-10">
-        <svg class="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <button id="contact-next-mobile" class="text-white hover:text-gray-300 transition-all duration-300 p-2 flex-shrink-0 z-10">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
         </svg>
       </button>

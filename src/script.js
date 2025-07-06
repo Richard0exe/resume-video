@@ -20,6 +20,13 @@ window.onscroll = function() {
 };
 
 window.onload = function() {
+  // Hide loading overlay after all content is loaded
+  const overlay = document.getElementById('loading-overlay');
+  if (overlay) {
+    overlay.style.opacity = '0';
+    setTimeout(() => { overlay.style.display = 'none'; }, 600);
+  }
+
   // Only update time if the element exists
   const timeElement = document.getElementById("time");
   if (timeElement) {
