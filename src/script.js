@@ -492,3 +492,66 @@ function initializeAboutTabs() {
     firstContent.style.transition = '';
   }
 }
+
+// Typewriter effect for the quote section
+function initializeTypewriter() {
+  const typewriterElement = document.getElementById('typewriter-text');
+  if (!typewriterElement) return;
+
+  // You can add more quotes here if you want to rotate them
+  const quotes = [
+    '“The best way to predict the future is to invent it.”',
+    '“Simplicity is the soul of efficiency.”',
+    '“Code is like humor. When you have to explain it, it’s bad.”',
+    '“Innovation distinguishes between a leader and a follower.”',
+    '“First, solve the problem. Then, write the code.”'
+  ];
+  const authorElement = document.querySelector('.fade-in-author h3');
+  const authors = [
+    '~ Alan Kay',
+    '~ Austin Freeman',
+    '~ Cory House',
+    '~ Steve Jobs',
+    '~ John Johnson'
+  ];
+  let quoteIndex = 0;
+
+  function typeQuote(quote, author, callback) {
+    typewriterElement.textContent = '';
+    let i = 0;
+    function type() {
+      if (i < quote.length) {
+        typewriterElement.textContent += quote.charAt(i);
+        i++;
+        setTimeout(type, 38); // typing speed
+      } else if (callback) {
+        setTimeout(callback, 1200); // pause before next quote
+      }
+    }
+    type();
+    // Fade in author after quote is done
+    if (authorElement) {
+      authorElement.style.opacity = 0;
+      setTimeout(() => {
+        authorElement.textContent = author;
+        authorElement.parentElement.classList.add('transition-opacity');
+        authorElement.style.opacity = 1;
+      }, quote.length * 38 + 300);
+    }
+  }
+
+  function nextQuote() {
+    typeQuote(quotes[quoteIndex], authors[quoteIndex], () => {
+      setTimeout(() => {
+        // Fade out author
+        if (authorElement) authorElement.style.opacity = 0;
+        setTimeout(() => {
+          quoteIndex = (quoteIndex + 1) % quotes.length;
+          nextQuote();
+        }, 400);
+      }, 1800);
+    });
+  }
+
+  nextQuote();
+}
