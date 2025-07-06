@@ -509,8 +509,8 @@ function initializeTypewriter() {
     { text: 'Simplicity is the soul of efficiency.', author: 'Austin Freeman' },
     { text: 'Code is like humor. When you have to explain it, it’s bad.', author: 'Cory House' },
   ];
-  const quoteText = document.getElementById('quote-text');
-  const quoteAuthor = document.getElementById('quote-author');
+  const quoteText = document.getElementById('typewriter-text');
+  const quoteAuthor = document.getElementById('typewriter-author');
   let quoteIndex = 0;
   let charIndex = 0;
   let typing = true;
