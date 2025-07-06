@@ -10,3 +10,30 @@
     font-size: 1.5rem !important;
   }
 }
+
+/* --- Fix scroll indicator position on mobile --- */
+@media (max-width: 767px) {
+  #scroll-indicator {
+    bottom: 5.5rem !important; /* Move higher for iPhone safe area */
+  }
+}
+
+/* --- Make About Me tabs scrollable on mobile and reduce padding --- */
+@media (max-width: 767px) {
+  .about-tabs-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    padding-bottom: 0.25rem;
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
+  }
+  .about-tabs-scroll .about-tab {
+    min-width: 7rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-size: 1rem;
+  }
+}
